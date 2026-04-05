@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kafka Features - Flip Cards Click</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f051d;
+            --card-bg: rgba(45, 20, 80, 0.6);
+            --accent-purple: #9d50bb;
+            --neon-blue: #6e7ff3;
+            --text-color: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle at top, #2d134d, #0f051d);
+            color: var(--text-color);
+            margin: 0;
+            padding: 100px 20px 40px 20px;
+            line-height: 2;
+            min-height: 100vh;
+        }
+
+        .floating-instruction {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(157, 80, 187, 0.8);
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: white;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+            }
+
+            .floating-instruction {
+                right: 50%;
+                transform: translateX(50%);
+                width: 80%;
+                text-align: center;
+            }
+        }
+
+        .flip-card {
+            background-color: transparent;
+            height: 450px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        /* Clase que activa el giro mediante clic */
+        .flip-card-inner.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+
+        .flip-card-front {
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card-img-container {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: hue-rotate(270deg) brightness(0.7);
+            transition: transform 0.5s ease;
+            /* Transición para el zoom y giro */
+        }
+
+        /* Efecto Zoom y Giro de 30 grados al pasar el mouse */
+        .flip-card:hover .card-img {
+            transform: scale(1.2) rotate(30deg);
+        }
+
+        .front-title {
+            position: absolute;
+            bottom: 0;
+            background: linear-gradient(transparent, rgba(15, 5, 29, 0.9));
+            width: 100%;
+            padding: 40px 0 20px 0;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .flip-card-back {
+            background: linear-gradient(135deg, #2d134d 0%, #1e0a3c 100%);
+            color: white;
+            transform: rotateY(180deg);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+
+        .back-title {
+            font-size: 1.4rem;
+            color: var(--neon-blue);
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--accent-purple);
+            padding-bottom: 5px;
+            text-align: left;
+        }
+
+        .back-text {
+            font-size: 0.95rem;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="floating-instruction">
+        Haga clic sobre las tarjetas para ampliar la información.
+    </div>
+
+    <div class="container">
+
+        <div class="flip-card" onclick="flipCard(this)">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <div class="card-img-container">
+                        <img src="https://images.pexels.com/photos/17629208/pexels-photo-17629208.jpeg" class="card-img"
+                            alt="Durabilidad">
+                    </div>
+                    <div class="front-title">Durabilidad</div>
+                </div>
+                <div class="flip-card-back">
+                    <div class="back-title">Durabilidad</div>
+                    <div class="back-text">
+                        Los mensajes se persisten en disco en los brokers, lo que permite a los consumidores leer los
+                        datos a su propio ritmo e incluso "rebobinar" y reprocesar eventos pasados.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flip-card" onclick="flipCard(this)">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <div class="card-img-container">
+                        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2000&auto=format&fit=crop"
+                            class="card-img" alt="Escalabilidad">
+                    </div>
+                    <div class="front-title">Escalabilidad</div>
+                </div>
+                <div class="flip-card-back">
+                    <div class="back-title">Escalabilidad</div>
+                    <div class="back-text">
+                        Los tópicos se dividen en particiones, que pueden distribuirse entre los brokers del clúster,
+                        permitiendo un rendimiento de escritura y lectura masivamente paralelo.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flip-card" onclick="flipCard(this)">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <div class="card-img-container">
+                        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2000&auto=format&fit=crop"
+                            class="card-img" alt="Desacoplamiento">
+                    </div>
+                    <div class="front-title">Desacoplamiento</div>
+                </div>
+                <div class="flip-card-back">
+                    <div class="back-title">Desacoplamiento</div>
+                    <div class="back-text">
+                        Kafka actúa como un búfer centralizado que desacopla los sistemas que producen datos de los que
+                        los consumen. Esto permite que múltiples sistemas (procesamiento en streaming, carga a data
+                        warehouses, sistemas de monitoreo) consuman el mismo flujo de datos de forma independiente y sin
+                        afectar a los productores.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function flipCard(card) {
+            const inner = card.querySelector('.flip-card-inner');
+            inner.classList.toggle('is-flipped');
+        }
+    </script>
+
+</body>
+
+</html>
