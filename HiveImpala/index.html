@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motor de Datos Big Data - Interfaz Neural</title>
+    <style>
+        /* CSS RESET & VARIABLES GLOBALES FUTURISTAS */
+        :root {
+            --bg-color: #050a14;
+            --tech-blue: #00f2fe;
+            --tech-purple: #a100ff;
+            --hive-main: #f0e68c;
+            /* Amarillo miel para Hive */
+            --hive-glow: rgba(240, 230, 140, 0.4);
+            --impala-main: #b22222;
+            /* Rojo fuego para Impala (Cloudera) */
+            --impala-glow: rgba(178, 34, 34, 0.4);
+            --text-color: #e0faff;
+            --font-main: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            --transition-speed: 0.5s;
+        }
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-main);
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        /* FONDO DE RED NEURAL (Pseudo-elemento) */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 20, 40, 0.8), rgba(5, 10, 20, 0.95)),
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><g fill-rule="evenodd"><g fill="%2300f2fe" fill-opacity="0.05"><path opacity=".5" d="M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zM15 86v-9h-9v9h9zm0-10v-9h-9v9h9zm0-10v-9h-9v9h9zm0-10v-9h-9v9h9zm0-10v-9h-9v9h9zm0-10v-9h-9v9h9zm0-10v-9h-9v9h9zm0-10v-9h-9v9h9zm9 70h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z"/></g></g></svg>');
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        /* HEADER */
+        header {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: var(--tech-blue);
+            text-shadow: 0 0 15px var(--tech-blue), 0 0 5px var(--tech-blue);
+        }
+
+        header p {
+            font-size: 1rem;
+            opacity: 0.8;
+            letter-spacing: 1px;
+        }
+
+        /* CONTENEDOR PRINCIPAL INTERACTIVO */
+        .cyber-interface {
+            width: 90%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        /* ÁREA DE BOTONES DE ACTIVACIÓN */
+        .activation-bay {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .core-activator {
+            background: rgba(10, 20, 40, 0.5);
+            border: 2px solid;
+            padding: 1.5rem 3rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all var(--transition-speed);
+            border-radius: 5px;
+            box-shadow: inset 0 0 10px rgba(0, 242, 254, 0.1);
+        }
+
+        /* Estilos específicos para cada núcleo */
+        .activator-hive {
+            color: var(--hive-main);
+            border-color: var(--hive-main);
+            text-shadow: 0 0 10px var(--hive-glow);
+        }
+
+        .activator-hive:hover {
+            background-color: rgba(240, 230, 140, 0.1);
+            box-shadow: 0 0 30px var(--hive-glow), inset 0 0 15px var(--hive-glow);
+        }
+
+        .activator-impala {
+            color: var(--impala-main);
+            border-color: var(--impala-main);
+            text-shadow: 0 0 10px var(--impala-glow);
+        }
+
+        .activator-impala:hover {
+            background-color: rgba(178, 34, 34, 0.1);
+            box-shadow: 0 0 30px var(--impala-glow), inset 0 0 15px var(--impala-glow);
+        }
+
+        /* Botón Activo */
+        .core-activator.active-core {
+            transform: scale(1.05);
+        }
+
+        .activator-hive.active-core {
+            background-color: var(--hive-main);
+            color: #000;
+            box-shadow: 0 0 50px var(--hive-main);
+            text-shadow: none;
+        }
+
+        .activator-impala.active-core {
+            background-color: var(--impala-main);
+            color: #fff;
+            box-shadow: 0 0 50px var(--impala-main);
+            text-shadow: none;
+        }
+
+        /* ÁREA DE VISUALIZACIÓN DE DATOS (Contenedor de Módulos) */
+        .data-stream-display {
+            width: 100%;
+            position: relative;
+            min-height: 400px;
+        }
+
+        /* MÓDULO DE DATOS (Paneles ocultos por defecto) */
+        .data-module {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: auto;
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            pointer-events: none;
+            transition: all 0.6s ease-out;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+        }
+
+        /* Módulo Activo */
+        .data-module.active-data {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+            position: relative;
+            /* Para ocupar espacio */
+        }
+
+        /* Diseño de cada panel interno */
+        .cyber-panel {
+            flex: 1;
+            padding: 2.5rem;
+            background: linear-gradient(135deg, rgba(5, 15, 30, 0.9) 0%, rgba(10, 20, 40, 0.8) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Marcos decorativos futuristas */
+        .cyber-panel::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                linear-gradient(to right, currentColor 2px, transparent 2px) 0 0,
+                linear-gradient(to bottom, currentColor 2px, transparent 2px) 0 0,
+                linear-gradient(to left, currentColor 2px, transparent 2px) 100% 100%,
+                linear-gradient(to top, currentColor 2px, transparent 2px) 100% 100%;
+            background-repeat: no-repeat;
+            background-size: 20px 20px;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* Colores específicos del panel */
+        .module-hive .cyber-panel {
+            color: #d8cba1;
+            /* Color de texto más cálido para el panel amarillo */
+            border-left: 5px solid var(--hive-main);
+        }
+
+        .module-hive .cyber-panel::before {
+            color: var(--hive-main);
+        }
+
+        .module-hive h2 {
+            color: var(--hive-main);
+            text-shadow: 0 0 10px var(--hive-glow);
+        }
+
+        .module-impala .cyber-panel {
+            color: #eac4c4;
+            /* Color de texto más cálido para el panel rojo */
+            border-left: 5px solid var(--impala-main);
+        }
+
+        .module-impala .cyber-panel::before {
+            color: var(--impala-main);
+        }
+
+        .module-impala h2 {
+            color: var(--impala-main);
+            text-shadow: 0 0 10px var(--impala-glow);
+        }
+
+        /* Títulos de datos */
+        .data-module h2 {
+            font-size: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            font-family: 'Courier New', Courier, monospace;
+            /* Monospace para toque técnico */
+        }
+
+        /* Párrafos de datos (TEXTO ORIGINAL) */
+        .data-module p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 0;
+            text-align: justify;
+        }
+
+        /* DECORACIÓN LATERAL (Líneas de estado) */
+        .status-decor {
+            width: 60px;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            padding: 1rem 0;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .module-hive .active-dot {
+            background-color: var(--hive-main);
+            box-shadow: 0 0 10px var(--hive-glow);
+        }
+
+        .module-impala .active-dot {
+            background-color: var(--impala-main);
+            box-shadow: 0 0 10px var(--impala-glow);
+        }
+
+        /* FOOTER DE ESTADO NEURAL */
+        footer {
+            margin-top: auto;
+            width: 100%;
+            padding: 1rem;
+            text-align: center;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--tech-purple);
+            opacity: 0.6;
+            letter-spacing: 2px;
+            border-top: 1px solid rgba(161, 0, 255, 0.2);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .activation-bay {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .core-activator {
+                width: 100%;
+                padding: 1rem;
+                font-size: 1.2rem;
+            }
+
+            .cyber-panel {
+                padding: 1.5rem;
+            }
+
+            .data-module p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>BIG DATA ARCHITECT CORES</h1>
+        <p>Seleccione un módulo para inicializar el stream de datos</p>
+    </header>
+
+    <div class="cyber-interface">
+
+        <div class="activation-bay">
+            <button class="core-activator activator-hive" onclick="activateCore('hive')">
+                Apache Hive
+            </button>
+            <button class="core-activator activator-impala" onclick="activateCore('impala')">
+                Apache Impala
+            </button>
+        </div>
+
+        <div class="data-stream-display">
+
+            <div id="data-hive" class="data-module module-hive">
+                <div class="status-decor">
+                    <div class="status-dot active-dot"></div>
+                    <div class="status-dot"></div>
+                    <div class="status-dot"></div>
+                    <div class="status-dot active-dot"></div>
+                </div>
+                <div class="cyber-panel">
+                    <h2>Apache Hive</h2>
+                    <p>Proporciona una abstracción de "tabla" sobre los archivos almacenados en HDFS. Almacena los
+                        metadatos del esquema (nombres de tabla, columnas, tipos de datos, ubicación de los archivos) en
+                        un Metastore (típicamente una base de datos relacional). Cuando un usuario ejecuta una consulta
+                        en HiveQL (un dialecto de SQL), Hive la traduce en una serie de trabajos MapReduce (o más
+                        recientemente, trabajos de Tez o Spark) que se ejecutan sobre los datos en HDFS (White, 2015).
+                        Su principal ventaja es la tolerancia a fallos y la capacidad de procesar conjuntos de datos a
+                        escala de petabytes, pero su latencia es alta debido a su dependencia de MapReduce.</p>
+                </div>
+            </div>
+
+            <div id="data-impala" class="data-module module-impala">
+                <div class="status-decor">
+                    <div class="status-dot active-dot"></div>
+                    <div class="status-dot active-dot"></div>
+                    <div class="status-dot"></div>
+                    <div class="status-dot active-dot"></div>
+                </div>
+                <div class="cyber-panel">
+                    <h2>Apache Impala</h2>
+                    <p>Desarrollado por Cloudera, Impala fue diseñado para superar las limitaciones de latencia de Hive.
+                        Es un motor de procesamiento de consultas masivamente paralelo (MPP) que evita MapReduce. Tiene
+                        sus propios daemons de ejecución que se ejecutan en los nodos de datos del clúster y procesan
+                        las consultas directamente en memoria, accediendo a los mismos datos y metadatos que Hive. Esto
+                        le permite ofrecer un rendimiento de consulta interactivo, órdenes de magnitud más rápido que
+                        Hive, lo que lo hace ideal para análisis exploratorio y BI (Business Intelligence) (White,
+                        2015).</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <script>
+        function activateCore(coreName) {
+            // 1. Desactivar todos los botones y módulos
+            const activators = document.querySelectorAll('.core-activator');
+            const modules = document.querySelectorAll('.data-module');
+
+            activators.forEach(act => act.classList.remove('active-core'));
+            modules.forEach(mod => mod.classList.remove('active-data'));
+
+            // 2. Activar el botón seleccionado
+            const selectedActivator = document.querySelector(`.activator-${coreName}`);
+            selectedActivator.classList.add('active-core');
+
+            // 3. Activar el módulo de datos correspondiente
+            const selectedModule = document.getElementById(`data-${coreName}`);
+            selectedModule.classList.add('active-data');
+        }
+
+        // Opcional: Activar Hive por defecto al cargar
+        // window.onload = () => activateCore('hive');
+    </script>
+</body>
+
+</html>
