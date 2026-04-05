@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo Interactivo Big Data Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #05020a;
+            --card-bg: rgba(20, 10, 35, 0.7);
+            --overlay-bg: rgba(15, 5, 25, 0.95);
+            --accent-purple: #9d4edd;
+            --light-purple: #c77dff;
+            --text-color: #e0e0e0;
+            --border-glow: rgba(157, 78, 221, 0.3);
+            --neon-glow: 0 0 15px rgba(157, 78, 221, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(60, 9, 108, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(90, 24, 154, 0.15) 0%, transparent 40%);
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            overflow-x: hidden;
+        }
+
+        /* Contenedor Principal en Grill (Izquierda/Derecha) */
+        .main-wrapper {
+            width: 100%;
+            max-width: 1400px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            perspective: 1000px;
+            /* Para efecto 3D sutil al hover */
+        }
+
+        /* Adaptabilidad para móviles */
+        @media (max-width: 1000px) {
+            .main-wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-glow);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(157, 78, 221, 0.05);
+            transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            min-height: 600px;
+            /* Altura consistente */
+        }
+
+        /* Efecto de luz giratoria de fondo */
+        .card::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, var(--accent-purple), transparent 30%);
+            animation: rotateBg 15s linear infinite;
+            opacity: 0.05;
+            z-index: 0;
+        }
+
+        @keyframes rotateBg {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .card:hover {
+            transform: translateY(-5px) rotateX(2deg);
+            box-shadow: 0 20px 50px rgba(157, 78, 221, 0.15);
+            border-color: var(--light-purple);
+        }
+
+        /* Capa de Bloqueo (Overlay) */
+        .card-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--overlay-bg);
+            backdrop-filter: blur(20px);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+            border-radius: 20px;
+        }
+
+        /* Icono de candado futurista */
+        .lock-icon {
+            width: 80px;
+            height: 80px;
+            border: 2px solid var(--accent-purple);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            box-shadow: var(--neon-glow);
+            position: relative;
+        }
+
+        .lock-icon::after {
+            content: "🔒";
+            /* Reemplazable por SVG si se desea */
+            font-size: 2rem;
+            filter: drop-shadow(0 0 5px var(--light-purple));
+        }
+
+        .overlay-text {
+            color: var(--light-purple);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-shadow: var(--neon-glow);
+        }
+
+        /* Estado Revelado */
+        .card.revealed .card-overlay {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* Contenido Real (Oculto inicialmente) */
+        .card-content {
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s;
+        }
+
+        .card.revealed .card-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Títulos y Etiquetas */
+        .badge {
+            display: inline-block;
+            background: rgba(157, 78, 221, 0.1);
+            padding: 4px 15px;
+            border-radius: 5px;
+            border: 1px solid var(--accent-purple);
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            color: var(--light-purple);
+        }
+
+        h2 {
+            color: var(--light-purple);
+            font-size: 1.7rem;
+            margin-bottom: 35px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            border-left: 4px solid var(--accent-purple);
+            padding-left: 15px;
+            text-shadow: 0 0 10px rgba(157, 78, 221, 0.5);
+        }
+
+        /* Lista y Texto (Sin modificar contenido) */
+        .content-list {
+            list-style: none;
+            text-align: left;
+            line-height: 2.0;
+            /* Interlineado doble */
+        }
+
+        .list-item {
+            margin-bottom: 25px;
+            padding-left: 35px;
+            position: relative;
+        }
+
+        /* Viñeta animada */
+        .list-item::before {
+            content: "✦";
+            position: absolute;
+            left: 0;
+            color: var(--accent-purple);
+            filter: drop-shadow(0 0 5px var(--accent-purple));
+            animation: pulseBullet 2.5s infinite;
+        }
+
+        @keyframes pulseBullet {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.3;
+                transform: scale(1.2);
+            }
+        }
+
+        strong {
+            color: var(--light-purple);
+            font-weight: 600;
+        }
+
+        /* Instrucción Flotante */
+        .floating-instruction {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(157, 78, 221, 0.1);
+            border: 1px solid var(--border-glow);
+            padding: 15px 25px;
+            border-radius: 50px;
+            backdrop-filter: blur(5px);
+            color: var(--light-purple);
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            z-index: 100;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .mouse-icon {
+            animation: clickAction 2s infinite;
+        }
+
+        @keyframes clickAction {
+
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main-wrapper">
+
+        <section class="card" onclick="revealCard(this)">
+            <div class="card-overlay">
+                <div class="lock-icon"></div>
+                <div class="overlay-text">Clic para desencriptar</div>
+            </div>
+
+            <div class="card-content">
+                <div class="badge">REQUISITOS</div>
+                <h2>Conocimientos previos</h2>
+                <ul class="content-list">
+                    <li class="list-item">
+                        <strong>Conceptos básicos de Sistemas Distribuidos:</strong> tener conocimiento básico de
+                        almacenamiento distribuido (HDFS), procesamiento paralelo (MapReduce y Spark).
+                    </li>
+                    <li class="list-item">
+                        <strong>Programación en lenguajes como Python o Scala:</strong> conocer y programar en alguno de
+                        los anteriores lenguajes, manejo de sus estructuras de datos, trabajar con programación
+                        funcional y uso de funciones, tanto de usuario como map, filter y reduce entre otras.
+                    </li>
+                    <li class="list-item">
+                        <strong>Lenguaje de Consulta SQL:</strong> tener conocimiento en manejo y sintaxis de consultas
+                        en SQL, como sentencias: SELECT- FROM – WHERE - GROUP BY y JOINs.
+                    </li>
+                    <li class="list-item">
+                        <strong>Conceptos de Bases de Datos:</strong> conocimiento de los modelos de datos relacionales
+                        y no relacionales, y sus casos de uso.
+                    </li>
+                    <li class="list-item">
+                        <strong>Estadística descriptiva básica:</strong> familiaridad con conceptos como media, mediana,
+                        desviación estándar y la interpretación de histogramas.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="card" onclick="revealCard(this)">
+            <div class="card-overlay">
+                <div class="lock-icon"></div>
+                <div class="overlay-text">Clic para desencriptar</div>
+            </div>
+
+            <div class="card-content">
+                <div class="badge">OBJETIVOS</div>
+                <h2>Competencias</h2>
+                <ul class="content-list">
+                    <li class="list-item">
+                        Comparar y contrastar las arquitecturas y casos de uso de las principales herramientas de
+                        ingesta de datos (Sqoop, Flume, Kafka), seleccionando la más adecuada para escenarios de
+                        transferencia en batch y en streaming.
+                    </li>
+                    <li class="list-item">
+                        Desarrollar y ejecutar consultas analíticas complejas sobre DataFrames de Spark utilizando Spark
+                        SQL, aplicando transformaciones, agregaciones y funciones de ventana para realizar análisis
+                        exploratorios de datos (EDA) a gran escala.
+                    </li>
+                    <li class="list-item">
+                        Aplicar algoritmos fundamentales de aprendizaje automático no supervisado (k-means) y
+                        supervisado (clasificación básica) utilizando la API de pipelines de Spark MLlib para construir,
+                        entrenar y evaluar modelos predictivos introductorios.
+                    </li>
+                    <li class="list-item">
+                        Evaluar y seleccionar servicios gestionados de Big Data de los principales proveedores de nube
+                        (AWS, Azure, GCP), diseñando una arquitectura de alto nivel que integre componentes de ingesta,
+                        almacenamiento, procesamiento y análisis, y justificando las decisiones en función de los
+                        requisitos técnicos y las consideraciones de costos.
+                    </li>
+                    <li class="list-item">
+                        Conectar herramientas de visualización (como Power BI o Tableau) a fuentes de Big Data y aplicar
+                        principios de diseño visual para comunicar eficazmente los insights derivados del análisis de
+                        grandes volúmenes de datos.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+    </div>
+
+    <div class="floating-instruction">
+        <span class="mouse-icon">🖱️</span>
+        <span>Haz clic en las tarjetas para revelar el contenido</span>
+    </div>
+
+    <script>
+        // Función simple para añadir la clase que revela la tarjeta
+        function revealCard(cardElement) {
+            cardElement.classList.add('revealed');
+        }
+    </script>
+
+</body>
+
+</html>
