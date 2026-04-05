@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Big Data Ingestion - Neo Tech</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f051d;
+            --card-bg: rgba(45, 20, 80, 0.4);
+            --accent-purple: #9d50bb;
+            --neon-blue: #6e7ff3;
+            --text-color: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle at top, #2d134d, #0f051d);
+            color: var(--text-color);
+            margin: 0;
+            padding: 80px 20px 40px 20px;
+            /* Espacio superior para la instrucción flotante */
+            line-height: 2;
+            min-height: 100vh;
+        }
+
+        /* Instrucción Flotante */
+        .floating-instruction {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(157, 80, 187, 0.8);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: white;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            pointer-events: none;
+            /* No interfiere con clics */
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            /* Configuración 2x2 por defecto */
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        /* Media Query para pantallas pequeñas (móviles) */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .floating-instruction {
+                left: 20px;
+                text-align: center;
+            }
+        }
+
+        /* Estilo de las Tarjetas */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(157, 80, 187, 0.3);
+            border-color: var(--accent-purple);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            filter: hue-rotate(280deg) brightness(0.8);
+        }
+
+        .card-content {
+            padding: 25px;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1.2;
+        }
+
+        /* Ventana Emergente (Modal) */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(15, 5, 29, 0.95);
+            backdrop-filter: blur(10px);
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: rgba(30, 10, 60, 0.8);
+            margin: 5% auto;
+            padding: 40px;
+            border: 2px solid var(--accent-purple);
+            border-radius: 30px;
+            width: 85%;
+            max-width: 800px;
+            box-shadow: 0 0 50px rgba(157, 80, 187, 0.2);
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .close-btn {
+            color: #fff;
+            float: right;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .modal-title {
+            color: var(--neon-blue);
+            font-size: 2rem;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--accent-purple);
+            padding-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        .modal-body {
+            font-size: 1.1rem;
+            text-align: left;
+            /* Alineado a la izquierda */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="floating-instruction">
+        Haga clic sobre las tarjetas para ampliar la información.
+    </div>
+
+    <h1 style="text-align:center; margin-bottom: 50px; color: white;">Ecosistema de Ingesta Big Data</h1>
+
+    <div class="container">
+        <div class="card" onclick="openModal('modalBatch')">
+            <img src="https://images.unsplash.com/photo-1607799279861-4dd421887fb3?q=80&w=2070&auto=format&fit=crop"
+                alt="Batch" class="card-image">
+            <div class="card-content">
+                <div class="card-title">Ingesta en Batch</div>
+                <p>Mover grandes volúmenes de datos a intervalos programados...</p>
+            </div>
+        </div>
+
+        <div class="card" onclick="openModal('modalSqoop')">
+            <img src="https://images.unsplash.com/photo-1648459776041-cbeab708f17b?q=80&w=2070&auto=format&fit=crop"
+                alt="Databases" class="card-image">
+            <div class="card-content">
+                <div class="card-title">Apache Sqoop</div>
+                <p>Transferencia eficiente entre bases de datos relacionales y Hadoop...</p>
+            </div>
+        </div>
+
+        <div class="card" onclick="openModal('modalFlume')">
+            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800"
+                alt="Logs" class="card-image">
+            <div class="card-content">
+                <div class="card-title">Apache Flume</div>
+                <p>Servicio distribuido para recopilar logs y datos de eventos...</p>
+            </div>
+        </div>
+
+        <div class="card" onclick="openModal('modalStreaming')">
+            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800"
+                alt="Streaming" class="card-image">
+            <div class="card-content">
+                <div class="card-title">Ingesta en Streaming</div>
+                <p>Procesamiento continuo de datos en tiempo real o casi real...</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalBatch" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('modalBatch')">&times;</span>
+            <h2 class="modal-title">Ingesta en Batch</h2>
+            <div class="modal-body">
+                Este enfoque se centra en mover grandes volúmenes de datos a intervalos programados (por ejemplo, cada
+                hora o cada noche). Es ideal para datos que no requieren un análisis inmediato y para la carga inicial
+                de sistemas de Big Data.
+            </div>
+        </div>
+    </div>
+
+    <div id="modalSqoop" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('modalSqoop')">&times;</span>
+            <h2 class="modal-title">Apache Sqoop</h2>
+            <div class="modal-body">
+                Herramienta diseñada específicamente para transferir eficientemente datos en bloque entre bases de datos
+                relacionales (como MySQL, Oracle, PostgreSQL) y el ecosistema Hadoop (principalmente HDFS y Hive). Sqoop
+                funciona generando trabajos MapReduce que se conectan a la base de datos relacional a través de un
+                conector JDBC, leen los datos de una tabla y los escriben en HDFS en formatos paralelizables como Avro o
+                Parquet. Su principal ventaja es la simplicidad y la optimización para transferencias masivas desde
+                fuentes estructuradas (White, 2015).
+            </div>
+        </div>
+    </div>
+
+    <div id="modalFlume" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('modalFlume')">&times;</span>
+            <h2 class="modal-title">Apache Flume</h2>
+            <div class="modal-body">
+                Servicio distribuido de alta disponibilidad, confiable que recopila, integra y mueve grandes volúmenes
+                de datos (por ejemplo, logs). Posee una arquitectura de agentes compuestos de tres elementos: Fuente o
+                source, Canal o channel, y Sumidero o sink. Ideal para la obtención o ingesta de datos propios de
+                eventos semiestructurados de generación continua, por ejemplo logs (White, 2015).
+            </div>
+        </div>
+    </div>
+
+    <div id="modalStreaming" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('modalStreaming')">&times;</span>
+            <h2 class="modal-title">Ingesta en Streaming</h2>
+            <div class="modal-body">
+                Este enfoque se ocupa de datos que se generan continuamente y que necesitan ser procesados en tiempo
+                real o casi real.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal(id) {
+            document.getElementById(id).style.display = "block";
+            document.body.style.overflow = "hidden";
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).style.display = "none";
+            document.body.style.overflow = "auto";
+        }
+
+        window.onclick = function (event) {
+            if (event.target.className === 'modal') {
+                event.target.style.display = "none";
+                document.body.style.overflow = "auto";
+            }
+        }
+    </script>
+
+</body>
+
+</html>
