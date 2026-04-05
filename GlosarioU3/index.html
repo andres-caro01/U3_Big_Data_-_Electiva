@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glosario de la unidad</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- VARIABLES DE COLOR --- */
+        :root {
+            --primary-brand: #483C9A;
+            --bg-light: #ececec;
+            --text-dark: #333333;
+            --white: #ffffff;
+            --disabled-gray: #a0a0a0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-image: radial-gradient(#d0d0d0 1px, transparent 1px);
+            background-size: 10px 10px;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px 20px;
+            box-sizing: border-box;
+        }
+
+        .glossary-widget {
+            width: 100%;
+            max-width: 900px;
+            background: transparent;
+            position: relative;
+        }
+
+        .instruction-wrapper {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+        }
+
+        .instruction-badge {
+            background-color: var(--primary-brand);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: pulse-attention 2s infinite;
+            cursor: default;
+        }
+
+        @keyframes pulse-attention {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(72, 60, 154, 0.4);
+            }
+
+            70% {
+                transform: scale(1.02);
+                box-shadow: 0 0 0 10px rgba(72, 60, 154, 0);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(72, 60, 154, 0);
+            }
+        }
+
+        .glossary-header {
+            background-color: var(--primary-brand);
+            color: var(--white);
+            padding: 20px;
+            text-align: center;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .glossary-header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .glossary-body {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .tabs-container {
+            display: flex;
+            flex-direction: column;
+            width: 140px;
+            flex-shrink: 0;
+            background-color: var(--primary-brand);
+            border-radius: 15px;
+            padding: 10px 0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 20px;
+        }
+
+        .tab-btn {
+            background: transparent;
+            color: var(--white);
+            border: none;
+            padding: 15px 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            outline: none;
+        }
+
+        .tab-btn:hover:not(.disabled) {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .tab-btn.active {
+            background-color: var(--bg-light);
+            color: var(--primary-brand);
+            border-radius: 5px 0 0 5px;
+        }
+
+        .content-area {
+            flex-grow: 1;
+            background-color: var(--bg-light);
+            border-radius: 15px;
+            padding: 40px;
+            min-height: 450px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .definition-item {
+            margin-bottom: 30px;
+            padding-left: 20px;
+            border-left: 5px solid var(--primary-brand);
+        }
+
+        .definition-item h3 {
+            color: var(--primary-brand);
+            margin: 0 0 10px 0;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .definition-item p {
+            color: var(--text-dark);
+            line-height: 1.6;
+            margin: 0;
+            text-align: justify;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @keyframes slideUpFade {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in .definition-item {
+            animation: slideUpFade 0.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        .animate-in .definition-item:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .animate-in .definition-item:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .animate-in .definition-item:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .animate-in .definition-item:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .animate-in .definition-item:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .animate-in .definition-item:nth-child(6) {
+            animation-delay: 0.6s;
+        }
+
+        @media (max-width: 768px) {
+            .glossary-body {
+                flex-direction: column;
+            }
+
+            .tabs-container {
+                width: 100%;
+                flex-direction: row;
+                position: static;
+            }
+
+            .tab-btn {
+                flex: 1;
+                border-bottom: none;
+                border-right: 1px solid rgba(255, 255, 255, 0.1);
+                font-size: 0.9rem;
+            }
+
+            .tab-btn.active {
+                border-radius: 10px 10px 0 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="glossary-widget">
+        <div class="instruction-wrapper">
+            <div class="instruction-badge">
+                <span>👆</span> Haga Clic para ampliar la información
+            </div>
+        </div>
+
+        <div class="glossary-header">
+            <h1>Glosario de la unidad</h1>
+        </div>
+
+        <div class="glossary-body">
+            <div class="tabs-container">
+                <button class="tab-btn active" onclick="filterContent('A-I', this)">A – I</button>
+                <button class="tab-btn" onclick="filterContent('J-Q', this)">J – Q</button>
+                <button class="tab-btn" onclick="filterContent('R-Z', this)">R – Z</button>
+            </div>
+
+            <div class="content-area">
+                <div class="content-group animate-in" id="group-A-I">
+                    <div class="definition-item">
+                        <h3>Análisis Exploratorio de Datos (EDA)</h3>
+                        <p>Es el proceso que permite analizar grupos de datos para identificar las principales
+                            características, por lo general de forma gráfica. Permite descubrir anomalías y patrones.
+                        </p>
+                    </div>
+                    <div class="definition-item">
+                        <h3>Clúster de cómputo</h3>
+                        <p>Un conjunto de ordenadores (nodos) interconectados que trabajan juntos como un único sistema
+                            para realizar tareas de procesamiento a gran escala.</p>
+                    </div>
+                    <div class="definition-item">
+                        <h3>Data Lake (Lago de Datos)</h3>
+                        <p>Es un almacenamiento centralizado o repositorio para almacenar grandes cantidades de datos
+                            con cualquier tipo de estructura en formato nativo (estructurados, semiestructurados y no
+                            estructurados).</p>
+                    </div>
+                    <div class="definition-item">
+                        <h3>Data Warehouse (Almacén de datos)</h3>
+                        <p>Sistema utilizado para almacenar datos actuales e históricos ya estructurados. Se utiliza
+                            para optimizar consultas analíticas complejas. Este sistema se utiliza para generar
+                            informes.</p>
+                    </div>
+                    <div class="definition-item">
+                        <h3>ETL Extracción - Transformación y Carga (Load)</h3>
+                        <p>Identifica el proceso de extracción de los datos se sus fuentes origen, posteriormente su
+                            transformación a formato compatibles con la demás información y adecuados, según su contexto
+                            y finalmente cargarlos en el destino definido, para este caso un Data Warehouse o bodega de
+                            datos.</p>
+                    </div>
+                    <div class="definition-item">
+                        <h3>IaaS - Infrastructure as a Service</h3>
+                        <p>Corresponde a una Infraestructura como Servicio. Es un modelo de computación en la nube. Esta
+                            provee servicios y recursos de computación virtualizados, como, por ejemplo: servidores,
+                            redes y almacenamiento).</p>
+                    </div>
+                    <div class="definition-item">
+                        <h3>Ingesta de datos</h3>
+                        <p>Se define ingesta como el proceso que mueve los datos desde cualquier fuente de datos al
+                            destino o sistema donde se almacenan, para luego ser accedidos, analizados y hacer uso de
+                            ellos.</p>
+                    </div>
+                </div>
+
+                <div class="content-group hidden" id="group-J-Q">
+                    <div class="definition-item">
+                        <h3>Machine Learning - Aprendizaje Automático</h3>
+                        <p>Es uno de los campos de inteligencia artificial, basado en el uso de algoritmos, que les
+                            permiten el aprendizaje a los sistemas y puedan a partir de la experiencia obtenida de los
+                            datos, mejorar predicciones.</p>
+                    </div>
+                    <div class="definition-item">
+                        <h3>PaaS - Platform as a Service</h3>
+                        <p>Corresponde a plataforma como servicio. Es un modelo de computación en la nube que provee el
+                            servicio el cual permite el desarrollo, ejecución y gestión de las aplicaciones,
+                            garantizando su funcionamiento y ahorrándose la complejidad de mantener una infraestructura
+                            en sitio.</p>
+                    </div>
+                    <div class="definition-item">
+                        <h3>Pipeline de datos</h3>
+                        <p>Se define como la serie de pasos en los que se dividen los procesos de datos donde la salida
+                            de uno de los procesos o paso pasa a ser la entrada del siguiente paso. Todo garantizando el
+                            flujo de datos dentro del proceso.</p>
+                    </div>
+                </div>
+
+                <div class="content-group hidden" id="group-R-Z">
+                    <div class="definition-item">
+                        <h3>SaaS - Software as a Service</h3>
+                        <p>Es lo que se llama software como servicio. Cuando un proveedor ofrece el uso de un software
+                            que aloja una aplicación y queda disponible para los clientes a través de los servicios de
+                            red.</p>
+                    </div>
+                    <div class="definition-item">
+                        <h3>Serverless - Sin Servidor</h3>
+                        <p>Modelo de servicio en la nube, donde la ejecución y gestión se asigna dinámicamente sin el
+                            uso de servidores.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function filterContent(groupId, btnElement) {
+            const groups = document.querySelectorAll('.content-group');
+            groups.forEach(group => {
+                group.classList.add('hidden');
+                group.classList.remove('animate-in');
+            });
+
+            const selectedGroup = document.getElementById('group-' + groupId);
+            if (selectedGroup) {
+                selectedGroup.classList.remove('hidden');
+                void selectedGroup.offsetWidth;
+                selectedGroup.classList.add('animate-in');
+            }
+
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+        }
+    </script>
+
+</body>
+
+</html>
