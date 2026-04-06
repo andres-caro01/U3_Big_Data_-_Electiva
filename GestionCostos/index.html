@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Optimization Final</title>
+    <style>
+        :root {
+            --purple-glow: #a855f7;
+            --liquid-bg: linear-gradient(45deg, #0f0c29, #302b63, #24243e);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--liquid-bg);
+            background-size: 400% 400%;
+            animation: liquid-anim 15s ease infinite;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        @keyframes liquid-anim {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Instrucción Flotante Superior Derecha */
+        .instruction-tag {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 12px 20px;
+            border-radius: 50px;
+            color: white;
+            font-size: 0.85rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 3000;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            pointer-events: none;
+            /* No interfiere con clics */
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            perspective: 1000px;
+            width: 100%;
+            max-width: 1100px;
+            justify-items: center;
+        }
+
+        @media (min-width: 900px) {
+            .container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .card {
+            width: 100%;
+            max-width: 320px;
+            height: 380px;
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .card:hover {
+            transform: translateY(-15px) rotateX(8deg) rotateY(8deg);
+            box-shadow: 0 0 30px 10px rgba(168, 85, 247, 0.3),
+                inset 0 0 20px rgba(168, 85, 247, 0.2);
+            border-color: var(--purple-glow);
+        }
+
+        .card-emoji {
+            font-size: 60px;
+            margin-bottom: 25px;
+        }
+
+        .card-title {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            padding: 0 25px;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            width: 90%;
+            max-width: 550px;
+            padding: 50px 40px;
+            border-radius: 35px;
+            color: white;
+            transform: scale(0.8) translateY(50px);
+            transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+            text-align: left;
+            line-height: 2.0;
+            position: relative;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: var(--purple-glow);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="instruction-tag">
+        haga clic sobre las tarjetas para ampliar la información
+    </div>
+
+    <div class="container">
+        <div class="card" onclick="openModal('modal1')">
+            <div class="card-emoji">⚙️</div>
+            <div class="card-title">Derechos de instancia</div>
+        </div>
+
+        <div class="card" onclick="openModal('modal2')">
+            <div class="card-emoji">💰</div>
+            <div class="card-title">Modelos de precios</div>
+        </div>
+
+        <div class="card" onclick="openModal('modal3')">
+            <div class="card-emoji">🤖</div>
+            <div class="card-title">Monitoreo y automatización</div>
+        </div>
+    </div>
+
+    <div id="modal1" class="modal-overlay" onclick="closeModal(event)">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal(event)">&times;</button>
+            <h2>Derechos de instancia</h2>
+            <p>Utilizar el tipo de instancia de cómputo adecuado para la carga de trabajo es crucial.</p>
+        </div>
+    </div>
+
+    <div id="modal2" class="modal-overlay" onclick="closeModal(event)">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal(event)">&times;</button>
+            <h2>Modelos de precios</h2>
+            <p>Aprovechar los modelos de precios como las Instancias reservadas (comprometerse a un uso a largo plazo a
+                cambio de un descuento) o las Instancias Spot (utilizar capacidad de cómputo no utilizada a un precio
+                muy bajo, pero con el riesgo de que la instancia sea interrumpida) puede reducir significativamente los
+                costos.</p>
+        </div>
+    </div>
+
+    <div id="modal3" class="modal-overlay" onclick="closeModal(event)">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal(event)">&times;</button>
+            <h2>Monitoreo y automatización</h2>
+            <p>Utilizar herramientas de monitoreo de costos y scripts de automatización para apagar los recursos no
+                utilizados es esencial para evitar facturas inesperadas.</p>
+        </div>
+    </div>
+
+    <script>
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            modal.style.display = 'flex';
+            setTimeout(() => { modal.classList.add('active'); }, 10);
+        }
+
+        function closeModal(event) {
+            // Lógica para cerrar si existe un modal activo
+            const activeModal = document.querySelector('.modal-overlay.active');
+            if (!activeModal) return;
+
+            // Si el evento viene de un clic, verificar que sea en el fondo o en el botón X
+            if (event && event.type === 'click') {
+                if (!event.target.classList.contains('modal-overlay') && !event.target.closest('.close-btn')) {
+                    return;
+                }
+            }
+
+            activeModal.classList.remove('active');
+            setTimeout(() => { activeModal.style.display = 'none'; }, 400);
+        }
+
+        // Función para cerrar con la tecla ESC
+        document.addEventListener('keydown', (event) => {
+            if (event.key === "Escape") {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+
+</html>
