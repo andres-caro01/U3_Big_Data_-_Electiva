@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Services - Neon Edition</title>
+    <style>
+        :root {
+            --bg-body: #05050a;
+            --bg-card: #0f0f1a;
+            --neon-purple: #bc13fe;
+            --neon-blue: #2400ff;
+            --text-main: #ffffff;
+            --text-body: #d1d1e0;
+            --glow-shadow: 0 0 15px rgba(188, 19, 254, 0.4);
+        }
+
+        /* Centrado total del contenido */
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .instruction {
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            color: var(--neon-purple);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 8px var(--neon-purple);
+            text-align: center;
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        .accordion-container {
+            width: 100%;
+            max-width: 700px;
+            /* Reescalable */
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        details {
+            background-color: var(--bg-card);
+            border: 1px solid rgba(188, 19, 254, 0.3);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s forwards;
+        }
+
+        details:hover {
+            border-color: var(--neon-purple);
+            box-shadow: var(--glow-shadow);
+            transform: scale(1.02);
+            /* Efecto orgánico al pasar el mouse */
+        }
+
+        summary {
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            list-style: none;
+            font-weight: 600;
+            font-size: clamp(1rem, 4vw, 1.2rem);
+            /* Texto responsivo */
+            outline: none;
+            position: relative;
+        }
+
+        /* Iconos con efecto Neón */
+        .icon {
+            width: 45px;
+            height: 45px;
+            background: rgba(188, 19, 254, 0.1);
+            border: 2px solid var(--neon-purple);
+            border-radius: 50%;
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 10px var(--neon-purple);
+            flex-shrink: 0;
+        }
+
+        /* Flecha animada */
+        summary::after {
+            content: '→';
+            position: absolute;
+            right: 25px;
+            color: var(--neon-purple);
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        details[open] summary::after {
+            transform: rotate(90deg);
+        }
+
+        /* Contenedor de contenido suave */
+        .content-wrapper {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+            opacity: 0;
+            padding: 0 25px 0 90px;
+        }
+
+        details.is-open .content-wrapper {
+            grid-template-rows: 1fr;
+            opacity: 1;
+            padding-bottom: 30px;
+        }
+
+        .content {
+            overflow: hidden;
+            line-height: 1.8;
+            color: var(--text-body);
+            font-size: 1rem;
+            text-align: justify;
+        }
+
+        /* Animaciones */
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 0.7;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+        }
+
+        /* Responsividad para móviles */
+        @media (max-width: 480px) {
+            summary {
+                padding: 15px;
+            }
+
+            .icon {
+                width: 35px;
+                height: 35px;
+                margin-right: 12px;
+            }
+
+            .content-wrapper {
+                padding: 0 20px 0 20px;
+            }
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="instruction">Haga clic sobre cada elemento para ampliar la información</div>
+
+    <div class="accordion-container">
+
+        <details style="animation-delay: 0.2s;">
+            <summary>
+                <div class="icon">⚖️</div>
+                Escalabilidad y elasticidad por demanda
+            </summary>
+            <div class="content-wrapper">
+                <div class="content">
+                    Corresponde a la capacidad de gestionar clusters de muchos nodos de forma inmediata para tareas
+                    específicas, luego bajar el servicio o apagar los clusters cuando se completa la tarea, esto permite
+                    optimizar recursos al pagar solo por el tiempo de uso. Comparativamente con un modelo on-premise,
+                    donde requiere una costosa inversión inicial de infraestructura y equipos que puede en muchos casos
+                    quedar sobredimensionado en un comienzo o en la mayoría de tiempo.
+                </div>
+            </div>
+        </details>
+
+        <details style="animation-delay: 0.4s;">
+            <summary>
+                <div class="icon">☁️</div>
+                Acceso a servicios gestionados
+            </summary>
+            <div class="content-wrapper">
+                <div class="content">
+                    Actualmente la mayoría de los proveedores de servicio en la nube, ofrecen toda una gama de servicios
+                    para proyectos Big Data, como plataformas PaaS. Estos ofrecen y gestionan la complejidad de la
+                    instalación, configuración, mantenimiento y escalamiento de la infraestructura, lo que favorece el
+                    hecho que se centre en la parte lógica de la aplicación.
+                </div>
+            </div>
+        </details>
+
+        <details style="animation-delay: 0.6s;">
+            <summary>
+                <div class="icon">💰</div>
+                Economías de escala
+            </summary>
+            <div class="content-wrapper">
+                <div class="content">
+                    Los proveedores de servicios en la nube se benefician de economías de escala, lo que por lo general
+                    corresponde a costos de hardware y costos operativos más bajos que los que podría pagar una
+                    organización en forma individual.
+                </div>
+            </div>
+        </details>
+
+    </div>
+
+    <script>
+        document.querySelectorAll('details').forEach((el) => {
+            const summary = el.querySelector('summary');
+            summary.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (el.classList.contains('is-open')) {
+                    el.classList.remove('is-open');
+                    setTimeout(() => { el.open = false; }, 600);
+                } else {
+                    // Cerrar otros para enfoque único (opcional)
+                    document.querySelectorAll('details.is-open').forEach(o => {
+                        o.classList.remove('is-open');
+                        setTimeout(() => { o.open = false; }, 600);
+                    });
+                    el.open = true;
+                    requestAnimationFrame(() => { el.classList.add('is-open'); });
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
