@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spark SQL Interactive Cards</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #9d50bb;
+            --secondary: #6e48aa;
+            --accent: #00f2fe;
+            --bg-dark: #0f0c29;
+            --text-light: #e0e0e0;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            font-family: 'Poppins', sans-serif;
+            color: var/(--text-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: flex;
+            gap: 2rem;
+            padding: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            perspective: 1000px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            width: 350px;
+            padding: 2rem;
+            position: relative;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(100px) scale(0.8);
+            animation: slideIn 1.2s cubic-bezier(0.17, 0.67, 0.83, 0.67) forwards;
+        }
+
+        /* Delay para la animación de caída en cascada */
+        .card:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+
+        .card:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .card:nth-child(3) {
+            animation-delay: 0.8s;
+        }
+
+        @keyframes slideIn {
+            0% {
+                opacity: 0;
+                transform: translateY(200px) rotateX(-30deg) scale(0.5);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0) rotateX(0) scale(1);
+            }
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .card:hover {
+            transform: translateY(-20px) rotateY(10deg);
+            border-color: var(--accent);
+            box-shadow: 0 25px 50px rgba(0, 242, 254, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(157, 80, 187, 0.5);
+        }
+
+        p {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.85);
+            text-align: justify;
+        }
+
+        .glow-element {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: var(--primary);
+            filter: blur(50px);
+            border-radius: 50%;
+            z-index: -1;
+            top: -20px;
+            right: -20px;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <article class="card">
+            <div class="glow-element"></div>
+            <h2>DataFrames y Datasets</h2>
+            <p>
+                Spark SQL introduce el concepto de DataFrame, una colección distribuida de datos organizada en columnas
+                con nombre. Es conceptualmente equivalente a una tabla en una base de datos relacional, pero con
+                optimizaciones enriquecidas. Los DataFrames pueden ser construidos a partir de una amplia variedad de
+                fuentes (archivos JSON, Parquet, tablas de Hive, RDBMS externos). Los Datasets son una extensión de la
+                API de DataFrame que proporciona seguridad de tipos en tiempo de compilación para lenguajes como Scala y
+                Java (Chambers & Zaharia, 2018).
+            </p>
+        </article>
+
+        <article class="card">
+            <div class="glow-element" style="background: var(--accent);"></div>
+            <h2>Componente Catalyst Optimizer</h2>
+            <p>
+                Es un optimizador extensible (Catalyst), corazón del Spark SQL. Al ejecutar una consulta SQL o alguna
+                operación de un DataFrame, este componente convierte o transforma un plan lógico, optimizado, aplicando
+                un conjunto de reglas, generando múltiples planes físicos que finalmente, revisa y opta por el plan con
+                más eficiencia, desde el punto de vista de costos de ejecución en el clúster Spark (Chambers & Zaharia,
+                2018).
+            </p>
+        </article>
+
+        <article class="card">
+            <div class="glow-element"></div>
+            <h2>Módulo de interfaz unificada</h2>
+            <p>
+                El SQL de Spark ofrece esta interfaz para mezclar consultas SQL con transformaciones de DataFrames, todo
+                en el mismo programa. Esto permite más potencia y flexibilidad.
+            </p>
+        </article>
+    </div>
+
+</body>
+
+</html>
