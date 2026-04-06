@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bibliografía - Data Engineering & Cloud</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent-color: #4a148c;
+            --accent-bright: #e040fb;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(224, 64, 251, 0.2);
+            --text-main: #ffffff;
+            --text-dim: #b39ddb;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0118;
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            cursor: default;
+        }
+
+        /* --- TOOLTIP PARA EL CURSOR --- */
+        #custom-cursor-tool {
+            position: fixed;
+            pointer-events: none;
+            background: var(--accent-bright);
+            color: #000;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            z-index: 9999;
+            display: none;
+            transform: translate(15px, 15px);
+            box-shadow: 0 0 15px var(--accent-bright);
+        }
+
+        /* --- FONDO ANIMADO --- */
+        .fluid-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: #0d0221;
+            filter: blur(80px);
+        }
+
+        .fluid-layer {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: fluidMove infinite alternate ease-in-out;
+        }
+
+        .layer-1 {
+            background: radial-gradient(circle, #6a1b9a 0%, transparent 70%);
+            width: 100vw;
+            height: 100vw;
+            top: -30%;
+            left: -10%;
+            animation-duration: 20s;
+        }
+
+        .layer-2 {
+            background: radial-gradient(circle, #311b92 0%, transparent 70%);
+            width: 80vw;
+            height: 80vw;
+            bottom: -20%;
+            right: -10%;
+            animation-duration: 25s;
+        }
+
+        @keyframes fluidMove {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            100% {
+                transform: translate(10%, 5%) scale(1.1);
+            }
+        }
+
+        /* --- INSTRUCCIÓN DE NAVEGACIÓN --- */
+        .nav-instruction {
+            width: 90vw;
+            max-width: 1400px;
+            background: rgba(224, 64, 251, 0.1);
+            border: 1px dashed var(--accent-bright);
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--accent-bright);
+            backdrop-filter: blur(10px);
+        }
+
+        /* --- TÍTULO --- */
+        .main-header {
+            text-align: center;
+            padding: 40px 20px;
+            z-index: 1;
+        }
+
+        .main-header h1 {
+            font-weight: 300;
+            font-size: 2.5rem;
+            letter-spacing: 10px;
+            text-transform: uppercase;
+            margin: 0;
+            background: linear-gradient(to right, #fff, var(--accent-bright));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .main-header .line {
+            width: 80px;
+            height: 3px;
+            background: var(--accent-bright);
+            margin: 15px auto;
+        }
+
+        /* --- GRID --- */
+        .reference-grid {
+            display: grid;
+            width: 90vw;
+            max-width: 1400px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            padding-bottom: 80px;
+            z-index: 1;
+        }
+
+        /* --- CARD --- */
+        .card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            position: relative;
+            min-height: 180px;
+        }
+
+        .card:hover {
+            border-color: var(--accent-bright);
+            transform: translateY(-5px);
+        }
+
+        .author-tag {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--accent-bright);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+
+        .title {
+            font-size: 1.05rem;
+            line-height: 1.5;
+            color: var(--text-main);
+            margin-bottom: 15px;
+        }
+
+        .footer-info {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 15px;
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* --- BOTONES --- */
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-visit {
+            text-decoration: none;
+            background: var(--accent-bright);
+            color: #000;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            transition: opacity 0.2s;
+        }
+
+        .btn-copy {
+            background: transparent;
+            border: 1px solid var(--accent-bright);
+            color: var(--accent-bright);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-copy:hover {
+            background: var(--accent-bright);
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="custom-cursor-tool">¡Enlace Copiado!</div>
+
+    <div class="fluid-background">
+        <div class="fluid-layer layer-1"></div>
+        <div class="fluid-layer layer-2"></div>
+    </div>
+
+    <div class="nav-instruction">
+        🚀 <b>Instrucción de Navegación:</b> Haz clic en <b>"Visitar"</b> para abrir el recurso en una pestaña nueva o
+        en <b>"Copiar Link"</b> para guardarlo en tu portapapeles.
+    </div>
+
+    <header class="main-header">
+        <h1>Bibliografía</h1>
+        <div class="line"></div>
+    </header>
+
+
+
+    <main class="reference-grid" id="grid">
+    </main>
+
+    <script>
+        const sources = [
+            { author: "Amazon Web Services (2026)", title: "Capa gratuita de AWS", url: "https://aws.amazon.com/es/" },
+            { author: "Chambers & Zaharia (2018)", title: "Spark: The Definitive Guide", url: "https://www.oreilly.com/library/view/spark-the-definitive/9781491912201/" },
+            { author: "Databricks (2025)", title: "Connect Tableau and Databricks", url: "https://docs.databricks.com/aws/en/partners/bi/tableau" },
+            { author: "Dougherty & Ilyankou (2024)", title: "Visualización práctica de datos", url: null },
+            { author: "Google Cloud (s.f.)", title: "PaaS vs IaaS vs SaaS: What's the difference?", url: "https://cloud.google.com/learn/paas-vs-iaas-vs-saas" },
+            { author: "Google Cloud (S.f.)", title: "Google Cloud: Computación en la nube", url: "https://cloud.google.com/" },
+            { author: "Johnson, J. (2026)", title: "Visualize Live Spark Data in Power BI", url: "https://www.cdata.com/kb/tech/spark-cloud-powerbi-service-gateway.rst" },
+            { author: "Karau, et al. (2015)", title: "Learning Spark", url: "https://www.oreilly.com/library/view/learning-spark/9781449359034/" },
+            { author: "Kleppmann, M. (2017)", title: "Designing Data-Intensive Applications", url: null },
+            { author: "Microsoft (s.f.)", title: "Microsoft Azure: Servicios en la nube", url: "https://azure.microsoft.com/es-es" },
+            { author: "Paruchuri, V. (2024)", title: "Python Data Visualization Libraries", url: "https://www.dataquest.io/blog/python-data-visualization-libraries/" },
+            { author: "Riza, et al. (2017)", title: "Advanced Analytics with Spark (2.ª ed.)", url: "https://www.oreilly.com/library/view/advanced-analytics-with/9781491972946/" },
+            { author: "Sakovich, N. (s.f.)", title: "IaaS vs. PaaS vs. SaaS: Differences", url: "https://sam-solutions.com/blog/iaas-vs-paas-vs-saas-whats-the-difference/" },
+            { author: "Shapira, et al. (2021)", title: "Kafka: The definitive guide", url: null },
+            { author: "White, T. (2015)", title: "Hadoop: The definitive guide", url: null }
+        ];
+
+        const grid = document.getElementById('grid');
+        const tool = document.getElementById('custom-cursor-tool');
+
+        // Seguimiento del ratón para el mensaje
+        document.addEventListener('mousemove', (e) => {
+            tool.style.left = e.clientX + 'px';
+            tool.style.top = e.clientY + 'px';
+        });
+
+        sources.forEach((s, i) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.style.setProperty('--i', i);
+
+            let html = `
+                <div class="author-tag">${s.author}</div>
+                <div class="title">${s.title}</div>
+                <div class="footer-info">O'Reilly Media / Cloud Docs</div>
+            `;
+
+            if (s.url) {
+                html += `
+                    <div class="btn-group">
+                        <a href="${s.url}" target="_blank" class="btn-visit">Visitar</a>
+                        <button class="btn-copy" onclick="copyLink('${s.url}')">Copiar Link</button>
+                    </div>
+                `;
+            }
+
+            card.innerHTML = html;
+            grid.appendChild(card);
+        });
+
+        function copyLink(url) {
+            navigator.clipboard.writeText(url).then(() => {
+                tool.style.display = 'block';
+                setTimeout(() => {
+                    tool.style.display = 'none';
+                }, 1500);
+            });
+        }
+    </script>
+</body>
+
+</html>
