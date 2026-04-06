@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proveedores Cloud - Neon Edition</title>
+    <style>
+        :root {
+            --bg-body: #05050a;
+            --bg-card: #0f0f1a;
+            --neon-purple: #bc13fe;
+            --neon-blue: #2400ff;
+            --text-main: #ffffff;
+            --text-body: #d1d1e0;
+            --glow-shadow: 0 0 15px rgba(188, 19, 254, 0.4);
+        }
+
+        /* Centrado total y responsividad */
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .instruction {
+            margin-bottom: 30px;
+            font-size: 1rem;
+            color: var(--neon-purple);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 8px var(--neon-purple);
+            text-align: center;
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        .accordion-container {
+            width: 100%;
+            max-width: 750px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        details {
+            background-color: var(--bg-card);
+            border: 1px solid rgba(188, 19, 254, 0.3);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s forwards;
+        }
+
+        details:hover {
+            border-color: var(--neon-purple);
+            box-shadow: var(--glow-shadow);
+            transform: scale(1.01);
+        }
+
+        summary {
+            padding: 22px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            list-style: none;
+            font-weight: 700;
+            font-size: clamp(1.1rem, 4vw, 1.3rem);
+            outline: none;
+            position: relative;
+        }
+
+        /* Iconos circulares neón */
+        .icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(188, 19, 254, 0.1);
+            border: 2px solid var(--neon-purple);
+            border-radius: 50%;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 10px var(--neon-purple);
+            flex-shrink: 0;
+            font-size: 1.2rem;
+        }
+
+        /* Flecha indicadora */
+        summary::after {
+            content: '›';
+            position: absolute;
+            right: 25px;
+            font-size: 2rem;
+            color: var(--neon-purple);
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            line-height: 1;
+        }
+
+        details[open] summary::after {
+            transform: rotate(90deg);
+        }
+
+        /* Contenedor animado del texto */
+        .content-wrapper {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+            opacity: 0;
+            padding: 0 30px 0 30px;
+        }
+
+        details.is-open .content-wrapper {
+            grid-template-rows: 1fr;
+            opacity: 1;
+            padding-bottom: 30px;
+        }
+
+        .content {
+            overflow: hidden;
+            line-height: 1.8;
+            color: var(--text-body);
+            font-size: 1rem;
+            text-align: left;
+            border-top: 1px solid rgba(188, 19, 254, 0.1);
+            padding-top: 20px;
+        }
+
+        /* Keyframes */
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 0.6;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.03);
+            }
+        }
+
+        /* Ajustes Móvil */
+        @media (max-width: 480px) {
+            summary {
+                padding: 18px;
+            }
+
+            .content-wrapper {
+                padding: 0 20px 0 20px;
+            }
+
+            .instruction {
+                font-size: 0.85rem;
+            }
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="instruction">Haga clic sobre cada elemento para ampliar la información</div>
+
+    <div class="accordion-container">
+
+        <details style="animation-delay: 0.1s;">
+            <summary>
+                <div class="icon">A</div>
+                Amazon Web Services (AWS)
+            </summary>
+            <div class="content-wrapper">
+                <div class="content">
+                    Como pionero en la computación en la nube, AWS tiene el ecosistema de servicios más maduro y
+                    extenso. EMR es altamente configurable y popular para cargas de trabajo de Spark. Redshift es un
+                    Data Warehouse MPP maduro, y Kinesis es su plataforma para el streaming de datos en tiempo real
+                    (Amazon Web Services, 2026).
+                </div>
+            </div>
+        </details>
+
+        <details style="animation-delay: 0.3s;">
+            <summary>
+                <div class="icon">M</div>
+                Microsoft Azure
+            </summary>
+            <div class="content-wrapper">
+                <div class="content">
+                    Es una opción fuerte para empresas que ya están invertidas en el ecosistema de Microsoft. El sistema
+                    HDInsight ofrece clústeres gestionados para la mayoría de frameworks de tipo código abierto. Azure
+                    Synapse Analytics es la plataforma de análisis integrada, la cual combina el data warehousing,
+                    integración de datos y todo el análisis de Big Data (Microsoft, s.f.).
+                </div>
+            </div>
+        </details>
+
+        <details style="animation-delay: 0.5s;">
+            <summary>
+                <div class="icon">G</div>
+                Google Cloud Platform – GCP
+            </summary>
+            <div class="content-wrapper">
+                <div class="content">
+                    Esta plataforma se caracteriza por su fortaleza en machine learning, análisis de datos y redes.
+                    BigQuery es un servicio Data Warehouse serverless (Bodega de Datos sin servidor), muy potente y
+                    fácil de usar. Esta plataforma separa en forma total el almacenamiento del cómputo. Dataflow, como
+                    otro servicio, ofrece un modelo de programación unificado, Apache Beam, que ofrece tanto
+                    procesamiento en streaming como en batch (Google Cloud, S.f.).
+                </div>
+            </div>
+        </details>
+
+    </div>
+
+    <script>
+        // Manejador de animación suave y cierre de otros elementos
+        document.querySelectorAll('details').forEach((el) => {
+            const summary = el.querySelector('summary');
+            summary.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (el.classList.contains('is-open')) {
+                    el.classList.remove('is-open');
+                    setTimeout(() => { el.open = false; }, 600);
+                } else {
+                    // Cierra los demás acordeones para un efecto más limpio
+                    document.querySelectorAll('details.is-open').forEach(o => {
+                        o.classList.remove('is-open');
+                        setTimeout(() => { o.open = false; }, 600);
+                    });
+                    el.open = true;
+                    requestAnimationFrame(() => { el.classList.add('is-open'); });
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
